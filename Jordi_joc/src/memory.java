@@ -22,6 +22,7 @@ public class memory extends JFrame {
 	static int intentosNum = 0;
 	static JButton[] BtnArray = new JButton[24];
 	static int[] arrayFet = new int[24];
+	static JButton btnComenzar;
 
 	private JPanel contentPane;
 
@@ -32,10 +33,47 @@ public class memory extends JFrame {
 		for (int i = 0; i < arrayFet.length; i++) {
 			arrayFet[i] = -1;
 		}
+		btnComenzar.setVisible(false);
+		for (int i = 0; i < BtnArray.length; i++) {
+			BtnArray[i].setVisible(true);
+		}
+		for (int i = 0; i < BtnArray.length; i++) {
+			BtnArray[i].setText("?");
+		}
+		for (int i = 0; i < array.length; i++) {
+			array[i]=0;
+		}
+		boolean semaforo = true;
+		int pos = 0;
+		while (semaforo) {
+			int contador = 0;
+			int numero = (int) (Math.random() * 12) + 1;
+			for (int i = 0; i < array.length; i++) {
+				if (numero == array[i]) {
+					contador++;
+				}
+			}
+			if (contador < 2) {
+				array[pos] = numero;
+				pos++;
+				if (pos == 24) {
+					semaforo = false;
+				}
+			}
+		}
+		primer = true;
+		primerBtn = -1;
+		primerBtnHint = -1;
+		segundoBtnHint = -1;
+		String numeroPrimer = "";
+		intentosNum = 0;
+		lblIntents.setText("Intents: " + intentosNum);
 	}
 
 	public static void main(String[] args) {
-		newGame();
+		for (int i = 0; i < arrayFet.length; i++) {
+			arrayFet[i] = -1;
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -355,10 +393,16 @@ public class memory extends JFrame {
 		lblIntents = new JLabel("Intents: 0");
 		lblIntents.setBounds(53, 267, 89, 14);
 		contentPane.add(lblIntents);
-		
-		JButton btnComenzar = new JButton("Comenzar");
-		btnComenzar.setBounds(309, 263, 89, 23);
+
+		btnComenzar = new JButton("Comenzar");
+		btnComenzar.setBounds(309, 263, 116, 23);
+		btnComenzar.setVisible(false);
 		contentPane.add(btnComenzar);
+		btnComenzar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				newGame();
+			}
+		});
 	}
 
 	public static void MetodeBoto(int numeroBTN) {
@@ -392,8 +436,12 @@ public class memory extends JFrame {
 							break;
 						}
 					}
-					if (posicionFet == 21) {
-//						win();
+					if (posicionFet == 22) {
+						System.out.println("hola");
+						btnComenzar.setVisible(true);
+						for (int i = 0; i < BtnArray.length; i++) {
+							BtnArray[i].setVisible(false);
+						}
 					}
 					arrayFet[posicionFet] = numeroBTN;
 					arrayFet[posicionFet + 1] = primerBtn;
